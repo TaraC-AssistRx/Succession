@@ -56,7 +56,6 @@ table.mini td{padding:5px 6px;border-bottom:1px solid var(--grey-100);}
 .dq-list div{padding:3px 0;border-bottom:1px solid var(--grey-100);}
 .dq-empty{color:var(--grey-500);font-style:italic;font-size:12px;}
 .footnote{font-size:11px;color:var(--grey-500);margin-top:24px;text-align:center;}
-#btnChangeFile{margin-left:12px;}
 .grid.triple{grid-template-columns:repeat(3,1fr);}
 .dualchart{display:flex;gap:14px;}
 .dualchart>div{flex:1;min-width:0;}
@@ -133,12 +132,11 @@ table.mini td{padding:5px 6px;border-bottom:1px solid var(--grey-100);}
     <h1>Succession Planning — Analytics Dashboard</h1>
     <div>
       <span class="meta" id="fileNameLabel"></span>
-      <button class="btn secondary" id="btnChangeFile">Change File…</button>
     </div>
   </header>
   <div id="filterBar" class="filter-bar"></div>
   <div id="main"></div>
-  <div class="footnote">Loaded automatically from a snapshot of the workbook taken when this file was generated. Re-generate this dashboard after updating the workbook in Excel to refresh it, or use "Change File…" above to load a different export ad hoc.</div>
+  <div class="footnote">Loaded automatically from a snapshot of the workbook taken when this file was generated. Re-generate this dashboard after updating the workbook in Excel to refresh it.</div>
 </div>
 
 <div id="nbModal" class="modal-overlay hidden">
@@ -177,11 +175,6 @@ document.getElementById('fallbackImport').addEventListener('change', async (e)=>
   const buf = await file.arrayBuffer();
   loadWorkbook(buf, file.name);
 });
-document.getElementById('btnChangeFile').onclick = ()=>{
-  document.getElementById('app').classList.add('hidden');
-  document.getElementById('loadScreen').classList.remove('hidden');
-};
-
 let FULL_DATA = null;
 // Current selection per filter field — Sets of allowed values. Populated in initFilters()
 // once the workbook loads, then mutated as the user checks/unchecks options.
@@ -201,7 +194,7 @@ function loadWorkbook(buf, name){
 
 // Auto-load the workbook snapshot embedded in this file at export time (see the
 // "embeddedWorkbookData" script tag) so viewers never have to select a file themselves.
-// "Change File…" still works afterward for loading a newer export ad hoc.
+// The manual load screen/button still exist as a fallback if this fails.
 function loadEmbeddedWorkbook(){
   try{
     const binary = atob(EMBEDDED_XLSX_BASE64);
